@@ -8,7 +8,7 @@ const liveClassData = {
     id: 'thermo-class',
     title: 'Problem Solving: Thermodynamics',
     instructor: 'Dr. Alakh Pandey',
-    instructorImage: '/images/instructor1.jpg',
+    instructorImage: 'https://img.freepik.com/premium-psd/online-education-cover-design_973156-24.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
     course: 'IIT JEE Preparation',
     courseId: 'iit-jee',
     duration: 90, // minutes

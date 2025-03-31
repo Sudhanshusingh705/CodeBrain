@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+  <!-- Basketball player silhouette -->
+  <g fill="#222" stroke="none">
+    <!-- Head -->
+    <ellipse cx="300" cy="120" rx="40" ry="45" />
+    
+    <!-- Body/Torso -->
+    <path d="M270 160 L260 300 L340 300 L330 160 Z" />
+    
+    <!-- Left arm pointing out -->
+    <path d="M260 170 L180 140 L170 150 L250 190 Z" />
+    <path d="M180 140 L160 110 L150 115 L170 150 Z" />
+    
+    <!-- Right arm -->
+    <path d="M330 170 L380 210 L390 200 L340 160 Z" />
+    <path d="M380 210 L410 240 L420 230 L390 200 Z" />
+    
+    <!-- Jersey - red color -->
+    <path fill="#ff4040" d="M280 160 L270 280 L330 280 L320 160 Z" />
+    
+    <!-- Shorts - black -->
+    <path d="M260 300 L240 400 L300 400 L340 400 L360 300 Z" />
+    
+    <!-- Left leg jumping -->
+    <path d="M280 400 L260 500 L240 580 L260 590 L280 510 L300 400" />
+    
+    <!-- Right leg kicking out -->
+    <path d="M320 400 L340 450 L400 480 L410 460 L350 430 L330 400" />
+    
+    <!-- Socks -->
+    <path fill="#ffffff" d="M240 580 L235 630 L255 635 L260 590 Z" />
+    <path fill="#ffffff" d="M400 480 L420 490 L430 480 L410 460 Z" />
+    
+    <!-- Shoes -->
+    <path d="M235 630 L220 640 L260 650 L255 635 Z" />
+    <path d="M420 490 L450 485 L455 500 L430 505 L420 490 Z" />
+    
+    <!-- Basketball shoe details -->
+    <path fill="#ff4040" d="M240 640 L245 645 L255 645 L250 640 Z" />
+    <path fill="#ff4040" d="M435 490 L440 495 L445 490 Z" />
+  </g>
+</svg> 

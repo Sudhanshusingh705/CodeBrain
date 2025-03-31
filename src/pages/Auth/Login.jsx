@@ -7,14 +7,15 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    rememberMe: false
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -45,67 +46,70 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-box">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={errors.email ? 'error' : ''}
-            />
-            {errors.email && <span className="error-message">{errors.email}</span>}
+      <div className="auth-content">
+        <div className="auth-form-container">
+          <div className="auth-header">
+            <h2>WELCOME BACK</h2>
+            <p>Welcome back! Please enter your details.</p>
           </div>
+          
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                className={errors.email ? 'error' : ''}
+              />
+              {errors.email && <span className="error-message">{errors.email}</span>}
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={errors.password ? 'error' : ''}
-            />
-            {errors.password && <span className="error-message">{errors.password}</span>}
-          </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+                className={errors.password ? 'error' : ''}
+              />
+              {errors.password && <span className="error-message">{errors.password}</span>}
+            </div>
 
-          <div className="form-group">
-            <label className="checkbox-label">
-              <input type="checkbox" /> Remember me
-            </label>
-            <Link to="/forgot-password" className="forgot-password">
-              Forgot Password?
-            </Link>
-          </div>
+            <div className="form-options">
+              <label className="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                /> 
+                Remember me
+              </label>
+              <Link to="/forgot-password" className="forgot-password">
+                Forgot password
+              </Link>
+            </div>
 
-          <button type="submit" className="auth-button">
-            Login
-          </button>
-
-          <div className="auth-divider">
-            <span>OR</span>
-          </div>
-
-          <div className="social-login">
-            <button type="button" className="social-button google">
-              <img src="/images/google-icon.png" alt="Google" />
-              Continue with Google
+            <button type="submit" className="auth-button">
+              Sign in
             </button>
-            <button type="button" className="social-button facebook">
-              <img src="/images/facebook-icon.png" alt="Facebook" />
-              Continue with Facebook
-            </button>
-          </div>
 
-          <p className="auth-switch">
-            Don't have an account? <Link to="/register">Register</Link>
-          </p>
-        </form>
+            <div className="auth-switch">
+              <p>Don't have an account? <Link to="/register">Sign up to free!</Link></p>
+            </div>
+          </form>
+        </div>
+        
+        <div className="auth-graphic">
+          {/* Athletic silhouette graphic will be added via CSS */}
+        </div>
       </div>
     </div>
   );

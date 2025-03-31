@@ -7,7 +7,7 @@ const coursesData = {
   'iit-jee': {
     id: 'iit-jee',
     title: 'IIT JEE Preparation',
-    image: '/images/course1.jpg',
+    image: 'https://img.freepik.com/premium-psd/screen-with-woman-holding-book-blue-background-with-woman-holding-book_1130490-193.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
     price: 9999,
     rating: 4.8,
     students: 24564,
@@ -53,7 +53,7 @@ const coursesData = {
   'neet': {
     id: 'neet',
     title: 'NEET Preparation',
-    image: '/images/course2.jpg',
+    image: 'https://img.freepik.com/free-psd/e-learning-banner-design-template_23-2149113592.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
     price: 8999,
     rating: 4.9,
     students: 28456,
@@ -204,7 +204,7 @@ const CourseDetail = () => {
                       {course.instructors.map((instructor, index) => (
                         <div className="instructor-card" key={index}>
                           <div className="instructor-image">
-                            <img src={instructor.image} alt={instructor.name} />
+                            <img src="https://media.licdn.com/dms/image/v2/D5603AQHU5vMmUZo68g/profile-displayphoto-shrink_200_200/B56ZXaziWDGsAc-/0/1743132700896?e=2147483647&v=beta&t=Q_FVKCtSlvciz_vd84CsnyhuPZZsKGHbiEtwtvh2PcA" alt={instructor.name} />
                           </div>
                           <div className="instructor-info">
                             <h3>{instructor.name}</h3>
@@ -234,7 +234,7 @@ const CourseDetail = () => {
                     <div className="review-list">
                       <div className="review-card">
                         <div className="reviewer-info">
-                          <img src="/images/student1.jpg" alt="Student" />
+                          <img src="https://media.licdn.com/dms/image/v2/D5603AQHU5vMmUZo68g/profile-displayphoto-shrink_200_200/B56ZXaziWDGsAc-/0/1743132700896?e=2147483647&v=beta&t=Q_FVKCtSlvciz_vd84CsnyhuPZZsKGHbiEtwtvh2PcA" alt="Student" />
                           <div>
                             <h4>Rahul Kumar</h4>
                             <div className="review-rating">⭐⭐⭐⭐⭐</div>
@@ -246,7 +246,7 @@ const CourseDetail = () => {
                       </div>
                       <div className="review-card">
                         <div className="reviewer-info">
-                          <img src="/images/student2.jpg" alt="Student" />
+                          <img src="https://media.licdn.com/dms/image/v2/D5603AQEvWWVOHRoaNA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1711897708289?e=2147483647&v=beta&t=gWHdmw0YsRu8-e7wasdGYNjmcScPBxRGUyfdVRCYORI" alt="Student" />
                           <div>
                             <h4>Priya Sharma</h4>
                             <div className="review-rating">⭐⭐⭐⭐⭐</div>

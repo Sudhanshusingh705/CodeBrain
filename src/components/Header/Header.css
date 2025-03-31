@@ -1,11 +1,14 @@
 /* Modern Header Styles */
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background: transparent;
   transition: all 0.3s ease;
+  box-shadow: none;
 }
 
 .header.scrolled {
@@ -135,7 +138,7 @@
 
 .main-nav ul li a {
   display: block;
-  color: #333;
+  color: #2201a5;
   text-decoration: none;
   font-weight: 500;
   padding: 10px 15px;
@@ -144,6 +147,7 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .main-nav ul li a:before {
@@ -159,17 +163,22 @@
 }
 
 .main-nav ul li a:hover {
-  color: #3949ab;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .main-nav ul li a:hover:before {
   left: 0;
 }
 
-.user-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.header.scrolled .main-nav ul li a {
+  color: #3949ab;
+  text-shadow: none;
+}
+
+.header.scrolled .main-nav ul li a:hover {
+  color: #5c6bc0;
+  text-shadow: none;
 }
 
 .user-menu {
@@ -349,6 +358,16 @@
   .logo img {
     height: 40px;
   }
+
+  .main-nav ul li a {
+    color: #333;
+    text-shadow: none;
+  }
+  
+  .main-nav ul li a:hover {
+    color: #3949ab;
+    text-shadow: none;
+  }
 }
 
 .nav-link {
@@ -391,4 +410,14 @@
 
 .header.scrolled .logo-image {
   transform: scale(0.9);
+}
+
+.header.scrolled .main-nav ul li a {
+  color: #3949ab;
+  text-shadow: none;
+}
+
+.header.scrolled .main-nav ul li a:hover {
+  color: #5c6bc0;
+  text-shadow: none;
 } 

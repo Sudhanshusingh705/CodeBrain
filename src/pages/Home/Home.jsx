@@ -11,10 +11,138 @@ const Home = () => {
   });
   
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeTab, setActiveTab] = useState('All');
+  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  const [activeStoryTab, setActiveStoryTab] = useState('students');
   const sliderRef = useRef(null);
-  const totalSlides = 6; // Total number of category cards
   const [visibleSlides, setVisibleSlides] = useState(
     window.innerWidth < 768 ? 1 : window.innerWidth < 1200 ? 2 : 3
+  );
+
+  // Add these state variables and references for Popular Courses slider
+  const coursesSliderRef = useRef(null);
+  const [currentCourseSlide, setCurrentCourseSlide] = useState(0);
+  const [visibleCourseSlides, setVisibleCourseSlides] = useState(
+    window.innerWidth < 480 ? 1 : 
+    window.innerWidth < 992 ? 2 : 
+    window.innerWidth < 1200 ? 3 : 4
+  );
+
+  // Hero carousel data
+  const heroSlides = [
+    {
+      id: 1,
+      image: "https://img.freepik.com/free-photo/medium-shot-woman-teaching-class_23-2149038268.jpg?t=st=1742996400~exp=1743000000~hmac=4a0a3cc2ce4649fc3c2ff6b97cccdbd3c80e2e4b7dc9e42de892c731ec4e8ccb",
+      title: "Let's Code Brain Trusted & Affordable Educational Platform",
+      description: "Unlock your potential by signing up with our platform - The most affordable learning solution"
+    },
+    {
+      id: 2,
+      image: "https://img.freepik.com/free-photo/students-knowing-right-answer_23-2149038280.jpg?t=st=1742996451~exp=1743000051~hmac=20ef0c729e1e4a51c9e0dff68d3a8ff0a08d698d32df17ae2d76b1c56f4494d3",
+      title: "Personalized Learning Journey",
+      description: "Tailored courses designed to match your learning pace and style"
+    },
+    {
+      id: 3,
+      image: "https://img.freepik.com/free-photo/blonde-woman-writing-notebook_23-2148038680.jpg?t=st=1742996500~exp=1743000100~hmac=48f37e74f2c5dc6d329e399187c7a7bfdf5f46bc5ffa2be4dcf9f05dd8be5d50",
+      title: "Expert-Led Live Classes",
+      description: "Learn directly from industry experts through interactive live sessions"
+    },
+    {
+      id: 4,
+      image: "https://img.freepik.com/free-photo/coach-teaching-kid-science_23-2149038349.jpg?t=st=1742996547~exp=1743000147~hmac=9de8dc887d58bf9ced7cc38d2f8c78dc9da20b7daf6f39ac54cf9b7a9ead48d1",
+      title: "Comprehensive Study Materials",
+      description: "Access to 10+ million tests, sample papers, and detailed notes"
+    }
+  ];
+
+  // Auto-advance hero slides
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHeroSlide(prev => (prev + 1) % heroSlides.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [heroSlides.length]);
+
+  // Handle hero slide navigation
+  const handleHeroSlideChange = (index) => {
+    setCurrentHeroSlide(index);
+  };
+
+  // Category data with their respective tabs
+  const categoryData = [
+    {
+      id: 1,
+      title: "Data Science Bootcamp",
+      classes: [
+        ["3 months", "6 months"],
+        ["Certification", "Job Guarantee"]
+      ],
+      link: "/courses/data-science",
+      iconClass: "data-science-icon",
+      tabs: ["All", "DataScience"]
+    },
+    {
+      id: 2,
+      title: "AI/ML Advanced",
+      classes: [
+        ["Beginner", "Intermediate"],
+        ["Advanced", "Certification"]
+      ],
+      link: "/courses/ai-ml",
+      iconClass: "ai-ml-icon",
+      tabs: ["All", "AI/ML"]
+    },
+    {
+      id: 3,
+      title: "Full Stack Developer",
+      classes: [
+        ["MERN Stack", "Java Full Stack"],
+        ["Python Full Stack", "More ↓"]
+      ],
+      link: "/courses/full-stack",
+      iconClass: "full-stack-icon",
+      tabs: ["All", "Full Stack Development"]
+    },
+    {
+      id: 4,
+      title: "Digital Marketing",
+      classes: [
+        ["SEO", "Social Media"],
+        ["Content", "Analytics"]
+      ],
+      link: "/courses/digital-marketing",
+      iconClass: "digital-marketing-icon",
+      tabs: ["All", "Digital Marketing"]
+    },
+    {
+      id: 5,
+      title: "NEET",
+      classes: [
+        ["class 11", "class 12"],
+        ["Dropper"]
+      ],
+      link: "/courses/neet",
+      iconClass: "neet-icon",
+      tabs: ["All"]
+    },
+    {
+      id: 6,
+      title: "IIT JEE",
+      classes: [
+        ["class 11", "class 12"],
+        ["Dropper"]
+      ],
+      link: "/courses/iit-jee",
+      iconClass: "jee-icon",
+      tabs: ["All"]
+    }
+  ];
+
+  // Filter categories based on active tab
+  const filteredCategories = categoryData.filter(category => 
+    category.tabs.includes(activeTab)
   );
 
   // Update visible slides on window resize
@@ -24,8 +152,8 @@ const Home = () => {
       setVisibleSlides(newVisibleSlides);
       
       // Ensure current slide index is still valid
-      if (currentSlide > totalSlides - newVisibleSlides) {
-        setCurrentSlide(Math.max(0, totalSlides - newVisibleSlides));
+      if (currentSlide > filteredCategories.length - newVisibleSlides) {
+        setCurrentSlide(Math.max(0, filteredCategories.length - newVisibleSlides));
       }
     };
     
@@ -33,7 +161,7 @@ const Home = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [currentSlide, totalSlides]);
+  }, [currentSlide, filteredCategories.length]);
 
   // Handle slider navigation
   const handleSlideChange = (direction) => {
@@ -50,7 +178,7 @@ const Home = () => {
       
       // Update the current slide
       const newSlide = direction === 'next' 
-        ? Math.min(currentSlide + 1, totalSlides - visibleSlides) 
+        ? Math.min(currentSlide + 1, filteredCategories.length - visibleSlides) 
         : Math.max(currentSlide - 1, 0);
       
       setCurrentSlide(newSlide);
@@ -66,6 +194,20 @@ const Home = () => {
         behavior: 'smooth'
       });
       setCurrentSlide(index);
+    }
+  };
+
+  // Handle tab change
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setCurrentSlide(0);
+    
+    // Reset slider scroll position
+    if (sliderRef.current) {
+      sliderRef.current.scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -101,19 +243,172 @@ const Home = () => {
     };
   }, []);
 
+  // Popular courses data
+  const popularCourses = [
+    {
+      id: 1,
+      title: "IIT JEE",
+      description: "Comprehensive preparation for IIT JEE Main & Advanced",
+      image: "https://img.freepik.com/free-vector/flat-design-science-webinar_23-2149133029.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid",
+      studentsEnrolled: "5.2k+",
+      rating: "4.9",
+      link: "/courses/iit-jee"
+    },
+    {
+      id: 2,
+      title: "NEET",
+      description: "Complete NEET preparation with expert guidance",
+      image: "https://img.freepik.com/free-vector/flat-design-science-sale-background_23-2149166790.jpg?t=st=1743353076~exp=1743356676~hmac=0b0ffc9e390d64f66d495712117942a2ae55d5230847361cd8836ff66a9cf411&w=1060",
+      studentsEnrolled: "7.8k+",
+      rating: "4.8",
+      link: "/courses/neet"
+    },
+    {
+      id: 3,
+      title: "UPSC",
+      description: "Structured preparation for UPSC Civil Services",
+      image: "https://img.freepik.com/free-psd/science-banner-template-with-photo_23-2149035976.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid",
+      studentsEnrolled: "3.5k+",
+      rating: "4.7",
+      link: "/courses/upsc"
+    },
+    {
+      id: 4,
+      title: "GATE",
+      description: "Expert guidance for GATE examination",
+      image: "https://img.freepik.com/free-vector/gradient-science-youtube-channel-art_23-2149487153.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid",
+      studentsEnrolled: "2.9k+",
+      rating: "4.8",
+      link: "/courses/gate"
+    },
+    {
+      id: 5,
+      title: "Data Science",
+      description: "Master data science with hands-on projects",
+      image: "https://img.freepik.com/free-vector/hand-drawn-online-college-template-design_23-2150574159.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid",
+      studentsEnrolled: "4.3k+",
+      rating: "4.9",
+      link: "/courses/data-science"
+    },
+    {
+      id: 6,
+      title: "Machine Learning",
+      description: "Comprehensive AI/ML course with real-world applications",
+      image: "https://img.freepik.com/free-psd/e-learning-banner-design-template_23-2149113593.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid",
+      studentsEnrolled: "3.7k+",
+      rating: "4.7",
+      link: "/courses/machine-learning"
+    }
+  ];
+
+  // Update visible slides on window resize (for both sliders)
+  useEffect(() => {
+    const handleResize = () => {
+      const newVisibleSlides = window.innerWidth < 768 ? 1 : window.innerWidth < 1200 ? 2 : 3;
+      setVisibleSlides(newVisibleSlides);
+      
+      const newVisibleCourseSlides = window.innerWidth < 480 ? 1 : 
+        window.innerWidth < 992 ? 2 : 
+        window.innerWidth < 1200 ? 3 : 4;
+      setVisibleCourseSlides(newVisibleCourseSlides);
+      
+      // Ensure current slide indices are still valid
+      if (currentSlide > filteredCategories.length - newVisibleSlides) {
+        setCurrentSlide(Math.max(0, filteredCategories.length - newVisibleSlides));
+      }
+      
+      // For course slider, check we're not showing empty cards
+      const cardsPerView = newVisibleCourseSlides * 2;
+      if (currentCourseSlide > popularCourses.length - cardsPerView) {
+        const maxStartIndex = Math.max(0, popularCourses.length - cardsPerView);
+        setCurrentCourseSlide(maxStartIndex);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [currentSlide, filteredCategories.length, currentCourseSlide, popularCourses.length]);
+
+  // Handle course slider navigation
+  const handleCourseSlideChange = (direction) => {
+    // Calculate the number of cards to display in one view
+    const cardsPerView = visibleCourseSlides * 2;
+    
+    // Calculate the step size for navigation
+    const step = cardsPerView;
+    
+    if (direction === 'next') {
+      const nextSlide = Math.min(currentCourseSlide + step, popularCourses.length - cardsPerView);
+      setCurrentCourseSlide(nextSlide);
+    } else {
+      const prevSlide = Math.max(0, currentCourseSlide - step);
+      setCurrentCourseSlide(prevSlide);
+    }
+  };
+  
+  // Handle course pagination click
+  const handleCoursePaginationClick = (index) => {
+    setCurrentCourseSlide(index);
+  };
+
   return (
     <div className="home">
-      {/* Hero Section */}
+      {/* Hero Section with Carousel */}
       <section className="hero-section">
-        <div className="container">
-          <div className="hero-content">
-            <h1>Bharat's Trusted & Affordable Educational Platform</h1>
-            <p>Unlock your potential by signing up with our platform - The most affordable learning solution</p>
-            <Link to="/register" className="cta-button">Get Started</Link>
+        <div className="hero-carousel">
+          {heroSlides.map((slide, index) => (
+            <div 
+              key={slide.id} 
+              className={`hero-slide ${index === currentHeroSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `linear-gradient(rgba(25, 47, 89, 0.7), rgba(40, 58, 90, 0.8)), url(${slide.image})` }}
+            >
+              <div className="container">
+                <div className="hero-content">
+                  <h1>{slide.title}</h1>
+                  <p>{slide.description}</p>
+                  <Link to="/register" className="cta-button">Get Started</Link>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          <div className="hero-carousel-controls">
+            <button 
+              className="carousel-control prev-btn" 
+              onClick={() => setCurrentHeroSlide((currentHeroSlide - 1 + heroSlides.length) % heroSlides.length)}
+              aria-label="Previous slide"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            
+            <div className="carousel-pagination">
+              {heroSlides.map((_, index) => (
+                <span 
+                  key={index}
+                  className={`carousel-dot ${index === currentHeroSlide ? 'active' : ''}`}
+                  onClick={() => handleHeroSlideChange(index)}
+                ></span>
+              ))}
+            </div>
+            
+            <button 
+              className="carousel-control next-btn" 
+              onClick={() => setCurrentHeroSlide((currentHeroSlide + 1) % heroSlides.length)}
+              aria-label="Next slide"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
         </div>
+        
         <div className="waves">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+          <svg xmlns="https://img.freepik.com/free-psd/flat-design-world-hepatitis-day-facebook-template_23-2150428372.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid" viewBox="0 0 1440 320" preserveAspectRatio="none">
             <path fill="#ffffff" fillOpacity="1" d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,208C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
         </div>
@@ -170,8 +465,20 @@ const Home = () => {
       <section className="exam-categories-section">
         <div className="container">
           <div className="section-header">
-            <h2>Explore Exam Categories</h2>
-            <p>PW is preparing students for 35+ exam categories. Scroll to find the one you are preparing for</p>
+            <h2>Explore Course Categories</h2>
+            {/*<p>Lets Code Brain is preparing students for 35+ exam categories. Scroll to find the one you are preparing for</p>*/}
+          </div>
+          
+          <div className="category-tabs">
+            {['All', 'DataScience', 'AI/ML', 'Full Stack Development', 'Digital Marketing'].map(tab => (
+              <button 
+                key={tab} 
+                className={`category-tab ${activeTab === tab ? 'active' : ''}`}
+                onClick={() => handleTabChange(tab)}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
           
           <div className="categories-slider-container">
@@ -187,134 +494,35 @@ const Home = () => {
             </button>
             
             <div className="categories-slider" ref={sliderRef}>
-              <div className="category-card">
-                <div className="category-content">
-                  <h3>NEET</h3>
-                  <div className="category-classes">
-                    <span className="class-tag">class 11</span>
-                    <span className="class-tag">class 12</span>
+              {filteredCategories.map(category => (
+                <div className="category-card" key={category.id}>
+                  <div className="category-content">
+                    <h3>{category.title}</h3>
+                    {category.classes.map((classRow, rowIndex) => (
+                      <div className="category-classes" key={rowIndex}>
+                        {classRow.map((className, index) => (
+                          <span className="class-tag" key={index}>{className}</span>
+                        ))}
+                      </div>
+                    ))}
+                    <Link to={category.link} className="explore-link">
+                      Explore Category
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </Link>
                   </div>
-                  <div className="category-classes">
-                    <span className="class-tag">Dropper</span>
-                  </div>
-                  <Link to="/courses/neet" className="explore-link">
-                    Explore Category
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </Link>
+                  <div className={`category-icon ${category.iconClass}`}></div>
                 </div>
-                <div className="category-icon neet-icon"></div>
-              </div>
-              
-              <div className="category-card">
-                <div className="category-content">
-                  <h3>IIT JEE</h3>
-                  <div className="category-classes">
-                    <span className="class-tag">class 11</span>
-                    <span className="class-tag">class 12</span>
-                  </div>
-                  <div className="category-classes">
-                    <span className="class-tag">Dropper</span>
-                  </div>
-                  <Link to="/courses/iit-jee" className="explore-link">
-                    Explore Category
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </Link>
-                </div>
-                <div className="category-icon jee-icon"></div>
-              </div>
-              
-              <div className="category-card">
-                <div className="category-content">
-                  <h3>School Preparation</h3>
-                  <div className="category-classes">
-                    <span className="class-tag">class 6</span>
-                    <span className="class-tag">class 7</span>
-                  </div>
-                  <div className="category-classes">
-                    <span className="class-tag">class 8</span>
-                    <span className="class-tag">More ↓</span>
-                  </div>
-                  <Link to="/courses/school-prep" className="explore-link">
-                    Explore Category
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </Link>
-                </div>
-                <div className="category-icon school-icon"></div>
-              </div>
-              
-              <div className="category-card">
-                <div className="category-content">
-                  <h3>UPSC</h3>
-                  <Link to="/courses/upsc" className="explore-link">
-                    Explore Category
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </Link>
-                </div>
-                <div className="category-icon upsc-icon"></div>
-              </div>
-              
-              <div className="category-card">
-                <div className="category-content">
-                  <h3>Govt Job Exams</h3>
-                  <div className="category-classes">
-                    <span className="class-tag">SSC</span>
-                    <span className="class-tag">Banking</span>
-                  </div>
-                  <div className="category-classes">
-                    <span className="class-tag">Teaching</span>
-                    <span className="class-tag">Judiciary</span>
-                  </div>
-                  <Link to="/courses/govt-job" className="explore-link">
-                    Explore Category
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </Link>
-                </div>
-                <div className="category-icon govt-icon"></div>
-              </div>
-              
-              <div className="category-card">
-                <div className="category-content">
-                  <h3>Defence</h3>
-                  <div className="category-classes">
-                    <span className="class-tag">NDA</span>
-                    <span className="class-tag">CDS</span>
-                  </div>
-                  <div className="category-classes">
-                    <span className="class-tag">AFCAT</span>
-                    <span className="class-tag">Agniveer</span>
-                  </div>
-                  <Link to="/courses/defence" className="explore-link">
-                    Explore Category
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </Link>
-                </div>
-                <div className="category-icon defence-icon"></div>
-              </div>
+              ))}
             </div>
             
             <button 
               className="slider-control next-btn" 
               aria-label="Next categories"
               onClick={() => handleSlideChange('next')}
-              disabled={currentSlide >= totalSlides - visibleSlides}
+              disabled={currentSlide >= filteredCategories.length - visibleSlides}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
@@ -323,10 +531,10 @@ const Home = () => {
           </div>
           
           <div className="slider-pagination">
-            {[...Array(Math.ceil(totalSlides / visibleSlides))].map((_, index) => (
+            {[...Array(Math.max(1, Math.ceil((filteredCategories.length - visibleSlides + 1) / visibleSlides)))].map((_, index) => (
               <span 
                 key={index} 
-                className={`pagination-dot ${currentSlide === index * visibleSlides ? 'active' : ''}`}
+                className={`pagination-dot ${currentSlide >= index * visibleSlides && currentSlide < (index + 1) * visibleSlides ? 'active' : ''}`}
                 onClick={() => handlePaginationClick(index * visibleSlides)}
               ></span>
             ))}
@@ -335,7 +543,7 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className={`features-section ${isVisible.features ? 'animate-in' : ''}`}>
+     {/* <section id="features" className={`features-section ${isVisible.features ? 'animate-in' : ''}`}>
         <div className="container">
           <div className="features-grid">
             <div className="feature-card">
@@ -360,61 +568,64 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section>*/}
 
       {/* Popular Courses Section */}
       <section id="courses" className={`courses-section ${isVisible.courses ? 'animate-in' : ''}`}>
         <div className="container">
           <h2>Popular Courses</h2>
-          <div className="courses-grid">
-            <div className="course-card">
-              <div className="course-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=IIT+JEE" alt="IIT JEE Course" />
-                <div className="course-overlay">
-                  <span className="students-enrolled">5.2k+ students</span>
-                  <span className="course-rating">★★★★★ 4.9</span>
+          
+          <div className="courses-slider-container">
+            <button 
+              className="slider-control prev-btn" 
+              aria-label="Previous courses"
+              onClick={() => handleCourseSlideChange('prev')}
+              disabled={currentCourseSlide === 0}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            
+            <div className="courses-slider" ref={coursesSliderRef}>
+              {popularCourses
+                .slice(currentCourseSlide, currentCourseSlide + (visibleCourseSlides * 2))
+                .map(course => (
+                <div className="course-card" key={course.id}>
+                  <div className="course-image-wrapper">
+                    <img src={course.image} alt={`${course.title} Course`} />
+                    <div className="course-overlay">
+                      <span className="students-enrolled">{course.studentsEnrolled} students</span>
+                      <span className="course-rating">★★★★★ {course.rating}</span>
+                    </div>
+                  </div>
+                  <h3>{course.title}</h3>
+                  <p>{course.description}</p>
+                  <Link to={course.link} className="course-link">Learn More</Link>
                 </div>
-              </div>
-              <h3>IIT JEE</h3>
-              <p>Comprehensive preparation for IIT JEE Main & Advanced</p>
-              <Link to="/courses/iit-jee" className="course-link">Learn More</Link>
+              ))}
             </div>
-            <div className="course-card">
-              <div className="course-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=NEET" alt="NEET Course" />
-                <div className="course-overlay">
-                  <span className="students-enrolled">7.8k+ students</span>
-                  <span className="course-rating">★★★★★ 4.8</span>
-                </div>
-              </div>
-              <h3>NEET</h3>
-              <p>Complete NEET preparation with expert guidance</p>
-              <Link to="/courses/neet" className="course-link">Learn More</Link>
-            </div>
-            <div className="course-card">
-              <div className="course-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=UPSC" alt="UPSC Course" />
-                <div className="course-overlay">
-                  <span className="students-enrolled">3.5k+ students</span>
-                  <span className="course-rating">★★★★★ 4.7</span>
-                </div>
-              </div>
-              <h3>UPSC</h3>
-              <p>Structured preparation for UPSC Civil Services</p>
-              <Link to="/courses/upsc" className="course-link">Learn More</Link>
-            </div>
-            <div className="course-card">
-              <div className="course-image-wrapper">
-                <img src="https://via.placeholder.com/400x300?text=GATE" alt="GATE Course" />
-                <div className="course-overlay">
-                  <span className="students-enrolled">2.9k+ students</span>
-                  <span className="course-rating">★★★★★ 4.8</span>
-                </div>
-              </div>
-              <h3>GATE</h3>
-              <p>Expert guidance for GATE examination</p>
-              <Link to="/courses/gate" className="course-link">Learn More</Link>
-            </div>
+            
+            <button 
+              className="slider-control next-btn" 
+              aria-label="Next courses"
+              onClick={() => handleCourseSlideChange('next')}
+              disabled={currentCourseSlide >= popularCourses.length - (visibleCourseSlides * 2)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+          
+          <div className="slider-pagination">
+            {[...Array(Math.ceil(popularCourses.length / (visibleCourseSlides * 2)))].map((_, index) => (
+              <span 
+                key={index} 
+                className={`pagination-dot ${currentCourseSlide === index * (visibleCourseSlides * 2) ? 'active' : ''}`}
+                onClick={() => handleCoursePaginationClick(index * (visibleCourseSlides * 2))}
+              ></span>
+            ))}
           </div>
         </div>
       </section>
@@ -422,29 +633,89 @@ const Home = () => {
       {/* Success Stories Section */}
       <section id="stories" className={`success-stories-section ${isVisible.stories ? 'animate-in' : ''}`}>
         <div className="container">
-          <h2>Student Success Stories</h2>
-          <div className="stories-grid">
-            <div className="story-card">
-              <div className="student-image">
-                <img src="https://via.placeholder.com/100x100?text=Student" alt="Student 1" />
-              </div>
-              <div className="story-content">
-                <h3>Rahul Kumar</h3>
-                <p className="achievement">AIR 1 in NEET 2024</p>
-                <p className="testimonial">"The structured approach and quality content helped me achieve my dream rank."</p>
-              </div>
-            </div>
-            <div className="story-card">
-              <div className="student-image">
-                <img src="https://via.placeholder.com/100x100?text=Student" alt="Student 2" />
-              </div>
-              <div className="story-content">
-                <h3>Priya Sharma</h3>
-                <p className="achievement">AIR 52 in JEE Advanced 2024</p>
-                <p className="testimonial">"The doubt solving sessions and practice tests were game-changers for me."</p>
-              </div>
-            </div>
+          <h2>Success Stories</h2>
+          <div className="stories-tabs">
+            <button 
+              className={`story-tab ${activeStoryTab === 'students' ? 'active' : ''}`}
+              onClick={() => setActiveStoryTab('students')}
+            >
+              Student Testimonials
+            </button>
+            <button 
+              className={`story-tab ${activeStoryTab === 'instructors' ? 'active' : ''}`}
+              onClick={() => setActiveStoryTab('instructors')}
+            >
+              Instructor Insights
+            </button>
           </div>
+          
+          {activeStoryTab === 'students' ? (
+            <div className="stories-grid student-stories">
+              <div className="story-card">
+                <div className="student-image">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQGa_wu070ujtA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706252126089?e=1749081600&v=beta&t=8wyNOyb5gP8lzPsqUBWuU0f_qmRes1Tcbl4Bz7qKDRY" alt="Student 1" />
+                </div>
+                <div className="story-content">
+                  <h3>Sudhanshu Singh</h3>
+                  <p className="achievement">AIR 1 in NEET 2024</p>
+                  <p className="testimonial">"The structured approach and quality content helped me achieve my dream rank."</p>
+                </div>
+              </div>
+              <div className="story-card">
+                <div className="student-image">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQEX0C9R-6HtTA/profile-displayphoto-shrink_200_200/B56ZOLfQDeGgAY-/0/1733212046964?e=2147483647&v=beta&t=W3vQ9VE8_gg3LulUQrzPiH0M6JYfTD5wVcwARlpRDpc" alt="Student 2" />
+                </div>
+                <div className="story-content">
+                  <h3>Vijay Laxmi</h3>
+                  <p className="achievement">AIR 52 in JEE Advanced 2024</p>
+                  <p className="testimonial">"The doubt solving sessions and practice tests were game-changers for me."</p>
+                </div>
+              </div>
+              <div className="story-card">
+                <div className="student-image">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQG4cSOjP3GOsg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1730704850153?e=1749081600&v=beta&t=q_bYqr9dmVu-zQGCyEIdiE6Wwwkoj3zljzheC-LPJB8" alt="Student 3" />
+                </div>
+                <div className="story-content">
+                  <h3>Sudhanshu Mishra</h3>
+                  <p className="achievement">Selected in Google after ML Course</p>
+                  <p className="testimonial">"The practical approach to ML concepts and real-world projects gave me the edge in interviews."</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="stories-grid instructor-stories">
+              <div className="story-card instructor-card">
+                <div className="instructor-image">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQHU5vMmUZo68g/profile-displayphoto-shrink_200_200/B56ZXaziWDGsAc-/0/1743132700896?e=2147483647&v=beta&t=Q_FVKCtSlvciz_vd84CsnyhuPZZsKGHbiEtwtvh2PcA" alt="Instructor 1" />
+                </div>
+                <div className="story-content">
+                  <h3>Dr. Rajesh Kumar</h3>
+                  <p className="achievement">10+ Years Teaching Physics, IIT Delhi Alumni</p>
+                  <p className="testimonial">"It's incredibly rewarding to see my students succeed at the highest levels. Our approach of conceptual clarity combined with problem-solving has proven extremely effective."</p>
+                </div>
+              </div>
+              <div className="story-card instructor-card">
+                <div className="instructor-image">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQEvWWVOHRoaNA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1711897708289?e=2147483647&v=beta&t=gWHdmw0YsRu8-e7wasdGYNjmcScPBxRGUyfdVRCYORI" alt="Instructor 2" />
+                </div>
+                <div className="story-content">
+                  <h3>Prof. Jashpreet Kaur</h3>
+                  <p className="achievement">Senior Data Science Instructor, Ex-Google</p>
+                  <p className="testimonial">"My focus is on teaching practical skills that are directly applicable in the industry. I'm proud that over 500 of my students now work in leading tech companies worldwide."</p>
+                </div>
+              </div>
+              <div className="story-card instructor-card">
+                <div className="instructor-image">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQHRINwgJAn4Zw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1706377538408?e=2147483647&v=beta&t=_v5YCGf9CJYZ6dY2mDh4O3YeGx5LTW5LXCeAU2jOKRo" alt="Instructor 3" />
+                </div>
+                <div className="story-content">
+                  <h3>Dr. Amit Verma</h3>
+                  <p className="achievement">NEET Expert, 15+ Years Experience</p>
+                  <p className="testimonial">"The key to NEET success is consistent practice and strong fundamentals. I've developed a unique teaching methodology that has helped hundreds of students secure medical seats."</p>
+                </div>
+              </div>
+            </div>
+          )}
           
           <div className="statistics">
             <div className="stat-item">
@@ -472,7 +743,7 @@ const Home = () => {
         <div className="container">
           <div className="app-content">
             <div className="app-text">
-              <h2>Download Our App</h2>
+              <h2>Download Our Courses</h2>
               <p>Get access to all our courses and features on the go!</p>
               <ul className="app-features">
                 <li>✓ Offline video lectures</li>
@@ -482,15 +753,15 @@ const Home = () => {
               </ul>
               <div className="app-buttons">
                 <a href="https://play.google.com/store" className="app-button">
-                  <img src="https://via.placeholder.com/150x50?text=Google+Play" alt="Get it on Google Play" />
+                  <img src="https://wonkrew.com/wp-content/uploads/2022/10/Google-Search-Console-logo-Wonkrew-1024x614.png" alt="Get it on Google Play" />
                 </a>
                 <a href="https://www.apple.com/app-store/" className="app-button">
-                  <img src="https://via.placeholder.com/150x50?text=App+Store" alt="Download on App Store" />
+                  <img src="https://www.eighty3creative.co.uk/wp-content/uploads/2021/02/Google-Analytics-4-Banner.jpg" alt="Download on App Store" />
                 </a>
               </div>
             </div>
             <div className="app-image">
-              <img src="https://via.placeholder.com/300x600?text=App+Preview" alt="App Preview" />
+              <img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*zzTEyTwyy7jXibtqVWg84Q.gif" alt="App Preview" />
             </div>
           </div>
         </div>

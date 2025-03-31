@@ -10,14 +10,15 @@ const Register = () => {
     phone: '',
     password: '',
     confirmPassword: '',
+    agreeTerms: false
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -52,6 +53,10 @@ const Register = () => {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
+    if (!formData.agreeTerms) {
+      newErrors.agreeTerms = 'You must agree to the Terms and Conditions';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -67,103 +72,96 @@ const Register = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-box">
-        <h2>Register</h2>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className={errors.fullName ? 'error' : ''}
-            />
-            {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+      <div className="auth-content">
+        <div className="auth-form-container">
+          <div className="auth-header">
+            <h2>CREATE ACCOUNT</h2>
+            <p>Welcome! Please enter your details to register.</p>
           </div>
+          
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="fullName">Full Name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+                className={errors.fullName ? 'error' : ''}
+              />
+              {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={errors.email ? 'error' : ''}
-            />
-            {errors.email && <span className="error-message">{errors.email}</span>}
-          </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                className={errors.email ? 'error' : ''}
+              />
+              {errors.email && <span className="error-message">{errors.email}</span>}
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="phone">Phone Number</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className={errors.phone ? 'error' : ''}
-            />
-            {errors.phone && <span className="error-message">{errors.phone}</span>}
-          </div>
+            <div className="form-group">
+              <label htmlFor="phone">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Enter your phone number"
+                value={formData.phone}
+                onChange={handleChange}
+                className={errors.phone ? 'error' : ''}
+              />
+              {errors.phone && <span className="error-message">{errors.phone}</span>}
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={errors.password ? 'error' : ''}
-            />
-            {errors.password && <span className="error-message">{errors.password}</span>}
-          </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+                className={errors.password ? 'error' : ''}
+              />
+              {errors.password && <span className="error-message">{errors.password}</span>}
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={errors.confirmPassword ? 'error' : ''}
-            />
-            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-          </div>
+            <div className="form-group terms-group">
+              <label className="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  name="agreeTerms"
+                  checked={formData.agreeTerms}
+                  onChange={handleChange}
+                /> 
+                I agree to the Terms and Conditions
+              </label>
+              {errors.agreeTerms && <span className="error-message">{errors.agreeTerms}</span>}
+            </div>
 
-          <div className="form-group">
-            <label className="checkbox-label">
-              <input type="checkbox" required /> I agree to the Terms and Conditions
-            </label>
-          </div>
-
-          <button type="submit" className="auth-button">
-            Register
-          </button>
-
-          <div className="auth-divider">
-            <span>OR</span>
-          </div>
-
-          <div className="social-login">
-            <button type="button" className="social-button google">
-              <img src="/images/google-icon.png" alt="Google" />
-              Continue with Google
+            <button type="submit" className="auth-button">
+              Sign up
             </button>
-            <button type="button" className="social-button facebook">
-              <img src="/images/facebook-icon.png" alt="Facebook" />
-              Continue with Facebook
-            </button>
-          </div>
 
-          <p className="auth-switch">
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
-        </form>
+            <div className="auth-switch">
+              <p>Already have an account? <Link to="/login">Sign in</Link></p>
+            </div>
+          </form>
+        </div>
+        
+        <div className="auth-graphic">
+          {/* Athletic silhouette graphic added via CSS */}
+        </div>
       </div>
     </div>
   );

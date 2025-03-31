@@ -6,12 +6,12 @@ import './Dashboard.css';
 const userData = {
   name: 'Sudhanshu Singh',
   email: 'singh@example.com',
-  profileImage: '/images/student1.jpg',
+  profileImage: 'https://lh3.googleusercontent.com/a/ACg8ocLT1rlCqhwSRZv5rEKisrjQ-5n2Bav03yS4uJ3pNnv_U0CpwKXHgw=s192-c-mo',
   enrolledCourses: [
     {
       id: 'iit-jee',
       title: 'IIT JEE Preparation',
-      image: '/images/course1.jpg',
+      image: 'https://img.freepik.com/free-psd/studying-home-banner-template_23-2148970851.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
       progress: 65,
       nextLesson: 'Thermodynamics: Laws of Thermodynamics',
       lastAccessed: '2023-09-15T10:30:00',
@@ -26,7 +26,7 @@ const userData = {
     {
       id: 'neet',
       title: 'NEET Preparation',
-      image: '/images/course2.jpg',
+      image: 'https://img.freepik.com/free-psd/e-learning-horizontal-banner-template-with-geometric-shapes_23-2149433273.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
       progress: 42,
       nextLesson: 'Human Physiology: Respiratory System',
       lastAccessed: '2023-09-14T15:45:00',

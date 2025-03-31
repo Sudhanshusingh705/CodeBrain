@@ -51,12 +51,12 @@ const Header = () => {
 
   return (
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="header-top">
+     {/* <div className="header-top">
         <div className="container">
           <div className="header-top-content">
             <div className="contact-info">
-              <span><i className="phone-icon">📞</i> 7019243492</span>
-              <span><i className="email-icon">📧</i> support@example.com</span>
+              <span><i className="phone-icon">📞</i> +91 0120-4438-111</span>
+              <span><i className="email-icon">📧</i> info@letscodebrain.com</span>
             </div>
             <div className="social-links">
               <a href="https://facebook.com" className="social-link" aria-label="Facebook">
@@ -71,14 +71,14 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>*/}
 
       <div className="header-main">
         <div className="container">
           <div className="header-main-content">
             <div className="logo">
               <Link to="/">
-                <img src="https://via.placeholder.com/150x50?text=EdTech+Logo" alt="Logo" className="logo-image" />
+                <img src="https://yt3.googleusercontent.com/xWLxl9eYjsM7W-m8ZKDTsHHIMvCNwPOobiDtnUUW_RH39XugF2xHTbzuaS8SJ_mLRpq_oS3v1A=s160-c-k-c0x00ffffff-no-rj" alt="Logo" className="logo-image" />
               </Link>
             </div>
 
