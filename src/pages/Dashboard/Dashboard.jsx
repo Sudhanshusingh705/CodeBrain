@@ -90,7 +90,7 @@ const userData = {
     {
       id: 'upsc',
       title: 'UPSC CSE Preparation',
-      image: '/images/course3.jpg',
+      image: 'https://img.freepik.com/premium-psd/online-learning-facebook-banner-cover_220346-1571.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
       rating: 4.9,
       students: 12500,
       price: 14999,
@@ -99,7 +99,7 @@ const userData = {
     {
       id: 'gate',
       title: 'GATE CSE Preparation',
-      image: '/images/course4.jpg',
+      image: 'https://img.freepik.com/free-psd/e-learning-banner-design-template_23-2149113591.jpg?uid=R123767660&ga=GA1.1.422920070.1741165168&semt=ais_hybrid',
       rating: 4.8,
       students: 8750,
       price: 8999,
