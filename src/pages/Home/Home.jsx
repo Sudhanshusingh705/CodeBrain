@@ -345,6 +345,7 @@ const Home = () => {
     } else {
       const prevSlide = Math.max(0, currentCourseSlide - step);
       setCurrentCourseSlide(prevSlide);
+      
     }
   };
   
