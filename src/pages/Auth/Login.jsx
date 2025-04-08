@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import ReCAPTCHA from 'react-google-recaptcha';
 import './Auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const recaptchaRef = useRef(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,16 +24,37 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    
+    // Enhanced email validation
     if (!formData.email) {
       newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+    } else {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const commonDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com'];
+      const emailParts = formData.email.split('@');
+      
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address';
+      } else if (emailParts[0].length < 2) {
+        newErrors.email = 'Email username must be at least 2 characters';
+      } else if (emailParts[0].length > 64) {
+        newErrors.email = 'Email username cannot exceed 64 characters';
+      } else if (emailParts[1].length > 255) {
+        newErrors.email = 'Email domain cannot exceed 255 characters';
+      } else if (!commonDomains.includes(emailParts[1].toLowerCase())) {
+        newErrors.email = 'Please enter a common email domain';
+      }
     }
+
+    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -38,10 +62,24 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      const recaptchaValue = recaptchaRef.current.getValue();
+      if (!recaptchaValue) {
+        setErrors(prev => ({ ...prev, recaptcha: 'Please complete the reCAPTCHA' }));
+        return;
+      }
       // Handle login logic here
       console.log('Form submitted:', formData);
       navigate('/dashboard');
     }
+  };
+
+  const handleGoogleSuccess = (credentialResponse) => {
+    console.log('Google login success:', credentialResponse);
+    // Handle Google login logic here
+  };
+
+  const handleGoogleError = () => {
+    console.log('Google login failed');
   };
 
   return (
@@ -97,9 +135,46 @@ const Login = () => {
               </Link>
             </div>
 
+            <div className="form-group">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="YOUR_RECAPTCHA_SITE_KEY"
+                onChange={() => setErrors(prev => ({ ...prev, recaptcha: undefined }))}
+              />
+              {errors.recaptcha && <span className="error-message">{errors.recaptcha}</span>}
+            </div>
+
             <button type="submit" className="auth-button">
               Sign in
             </button>
+
+            <div className="divider">
+              <span>or</span>
+            </div>
+
+            <div className="social-auth-buttons">
+              <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  useOneTap
+                  theme="outline"
+                  size="large"
+                  width="100%"
+                  text="continue_with"
+                />
+              </GoogleOAuthProvider>
+              
+              <button type="button" className="social-auth-button facebook">
+                <i className="fab fa-facebook-f"></i>
+                Continue with Facebook
+              </button>
+              
+              <button type="button" className="social-auth-button twitter">
+                <i className="fab fa-twitter"></i>
+                Continue with Twitter
+              </button>
+            </div>
 
             <div className="auth-switch">
               <p>Don't have an account? <Link to="/register">Sign up to free!</Link></p>
