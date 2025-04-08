@@ -208,54 +208,39 @@
   z-index: 2;
 }
 
+/* Social Media Buttons Row */
 .social-auth-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
 
 .social-auth-button {
+  flex: 1;
+  margin: 0 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: white;
-  color: #333;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.social-auth-button:hover {
+  padding: 0.5rem;
+  border-radius: 4px;
   background-color: #f5f5f5;
-}
-
-.social-auth-button.facebook {
-  background-color: #1877f2;
-  color: white;
-  border-color: #1877f2;
-}
-
-.social-auth-button.facebook:hover {
-  background-color: #166fe5;
-}
-
-.social-auth-button.twitter {
-  background-color: #1da1f2;
-  color: white;
-  border-color: #1da1f2;
-}
-
-.social-auth-button.twitter:hover {
-  background-color: #1a91da;
+  transition: background-color 0.3s ease;
 }
 
 .social-auth-button i {
-  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.social-auth-button.facebook {
+  color: #3b5998;
+}
+
+.social-auth-button.twitter {
+  color: #1da1f2;
+}
+
+.social-auth-button:hover {
+  background-color: #e0e0e0;
 }
 
 .divider {

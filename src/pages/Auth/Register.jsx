@@ -10,7 +10,8 @@ const Register = () => {
   const navigate = useNavigate();
   const recaptchaRef = useRef(null);
   const [formData, setFormData] = useState({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     password: '',
@@ -37,10 +38,12 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    } else if (formData.fullName.split(' ').length < 2) {
-      newErrors.fullName = 'Please enter both first and last name';
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
     }
 
     if (!formData.email) {
@@ -119,17 +122,31 @@ const Register = () => {
           
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 type="text"
-                id="fullName"
-                name="fullName"
-                placeholder="Enter your First and Last Name"
-                value={formData.fullName}
+                id="firstName"
+                name="firstName"
+                placeholder="Enter your First Name"
+                value={formData.firstName}
                 onChange={handleChange}
-                className={errors.fullName ? 'error' : ''}
+                className={errors.firstName ? 'error' : ''}
               />
-              {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+              {errors.firstName && <span className="error-message">{errors.firstName}</span>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Enter your Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={errors.lastName ? 'error' : ''}
+              />
+              {errors.lastName && <span className="error-message">{errors.lastName}</span>}
             </div>
 
             <div className="form-group">
@@ -238,18 +255,18 @@ const Register = () => {
                   theme="outline"
                   size="large"
                   width="100%"
-                  text="continue_with"
+                  text="Google"
                 />
               </GoogleOAuthProvider>
               
               <button type="button" className="social-auth-button facebook">
                 <i className="fab fa-facebook-f"></i>
-                Continue with Facebook
+                Facebook
               </button>
               
               <button type="button" className="social-auth-button twitter">
                 <i className="fab fa-twitter"></i>
-                Continue with Twitter
+                Twitter
               </button>
             </div>
 

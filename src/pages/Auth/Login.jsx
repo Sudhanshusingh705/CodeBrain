@@ -161,18 +161,18 @@ const Login = () => {
                   theme="outline"
                   size="large"
                   width="100%"
-                  text="continue_with"
+                  text="Google"
                 />
               </GoogleOAuthProvider>
               
               <button type="button" className="social-auth-button facebook">
                 <i className="fab fa-facebook-f"></i>
-                Continue with Facebook
+                Facebook
               </button>
               
               <button type="button" className="social-auth-button twitter">
                 <i className="fab fa-twitter"></i>
-                Continue with Twitter
+                Twitter
               </button>
             </div>
 

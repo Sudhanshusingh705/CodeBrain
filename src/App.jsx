@@ -5,6 +5,7 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 import CourseDetail from './pages/Courses/CourseDetail';
 import Enrollment from './pages/Enrollment/Enrollment';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -26,6 +27,7 @@ const App = () => {
             {/* Authentication */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             
             {/* Courses */}
             <Route path="/courses/:courseId" element={<CourseDetail />} />
